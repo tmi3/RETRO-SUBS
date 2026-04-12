@@ -81,7 +81,7 @@ export default function App() {
                 VIEW MENU <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </a>
               <a 
-                href="https://maps.google.com/?q=269+Beaver+St,+New+Britain,+CT"
+                href="https://maps.app.goo.gl/bbvRyYAptJyTtzay7"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="border border-white/20 hover:border-neon-yellow hover:text-neon-yellow font-display px-10 py-4 rounded-none transition-all flex items-center gap-2"
