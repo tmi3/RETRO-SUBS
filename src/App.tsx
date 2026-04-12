@@ -1,8 +1,4 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import { 
   Film, 
@@ -12,15 +8,21 @@ import {
   Star, 
   Flame, 
   Clock,
-  Navigation
+  Navigation,
+  Zap
 } from 'lucide-react';
-import { MENU_ITEMS } from './constants';
+import { MENU_ITEMS, CUSTOMIZER } from './constants';
 
 export default function App() {
-  const categories = ['Blockbusters', 'Main Cast', 'Action Stars'];
+  const salads = MENU_ITEMS.filter(item => item.category === 'Salads');
+  const wings = MENU_ITEMS.filter(item => item.category === 'Wings');
+  const fries = MENU_ITEMS.filter(item => item.category === 'Fries');
+  const coldSubs = MENU_ITEMS.filter(item => item.category === 'Cold Subs');
+  const hotSubs = MENU_ITEMS.filter(item => item.category === 'Hot Subs');
+  const specialFeatures = MENU_ITEMS.filter(item => item.category === 'Retro Special Features');
 
   return (
-    <div className="min-h-screen grainy-overlay selection:bg-neon-yellow selection:text-movie-black">
+    <div className="min-h-screen grainy-overlay selection:bg-neon-yellow selection:text-movie-black bg-movie-black text-cream">
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-movie-black/80 backdrop-blur-md border-b border-white/10 px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -89,93 +91,171 @@ export default function App() {
             </div>
           </motion.div>
         </div>
-
-        {/* Floating Stats */}
-        <div className="absolute bottom-10 left-10 hidden lg:block">
-          <div className="flex gap-12 font-mono text-xs tracking-widest opacity-50">
-            <div className="flex flex-col gap-1">
-              <span>EST.</span>
-              <span className="text-white font-bold">2024</span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <span>LOCATION</span>
-              <span className="text-white font-bold">NEW BRITAIN, CT</span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <span>RATING</span>
-              <span className="text-white font-bold">★★★★★</span>
-            </div>
-          </div>
-        </div>
       </section>
 
-      {/* Menu Section */}
-      <section id="menu" className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-24">
-          <h2 className="text-6xl md:text-8xl mb-4">THE FEATURE FILM</h2>
-          <p className="text-cream/50 font-mono tracking-[0.5em] uppercase text-sm">Legendary flavors on Beaver St.</p>
-        </div>
+      {/* Unified Menu Section Header */}
+      <section id="menu" className="relative pt-24 pb-12 px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <h2 className="text-5xl md:text-8xl mb-4 leading-none font-display tracking-tighter">
+            THE <span className="text-neon-yellow">MENU</span>
+          </h2>
+          <div className="flex items-center justify-center gap-4 text-cream/40 font-mono text-[10px] tracking-[0.3em] uppercase">
+            <MapPin className="w-3 h-3" /> 269 BEAVER ST, NEW BRITAIN
+            <span className="h-1 w-1 rounded-full bg-retro-red" />
+            <Phone className="w-3 h-3" /> (860) 325-0772
+          </div>
+        </motion.div>
+      </section>
 
-        <div className="space-y-32">
-          {categories.map((category) => (
-            <div key={category} className="space-y-12">
-              <div className="flex items-center gap-6">
-                <h3 className="text-4xl md:text-5xl text-neon-yellow whitespace-nowrap">{category}</h3>
-                <div className="h-px w-full bg-white/10" />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
-                {MENU_ITEMS.filter(item => item.category === category).map((item) => (
+      {/* Unified Menu Section */}
+      <section className="max-w-7xl mx-auto px-6 pb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          {/* Left Column: Subs & Specials */}
+          <div className="lg:col-span-8 space-y-16">
+            
+            {/* Retro Special Features */}
+            <div className="bg-white/5 border border-white/10 p-8">
+              <h2 className="font-display text-3xl text-neon-yellow mb-8 border-b border-white/10 pb-4">RETRO SPECIAL FEATURES</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {specialFeatures.map(item => (
                   <div key={item.id} className="group">
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="flex flex-col gap-2">
-                        {item.badge && (
-                          <span className="bg-neon-yellow text-movie-black font-display text-[8px] px-2 py-0.5 tracking-widest w-fit">
-                            {item.badge}
-                          </span>
-                        )}
-                        <h4 className="text-3xl group-hover:text-retro-red transition-colors flex items-center gap-2">
-                          {item.name}
-                          {item.isHot && <Flame className="w-5 h-5 text-retro-red" />}
-                        </h4>
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="text-xl group-hover:text-retro-red transition-colors">• {item.name}</h3>
+                      <div className="text-right font-mono text-xs">
+                        <span className="text-neon-yellow">6" ${item.price6}</span>
+                        <span className="mx-2 text-white/20">/</span>
+                        <span className="text-white">12" ${item.price12}</span>
                       </div>
-                      <span className="font-mono text-neon-yellow text-xl">${item.price}</span>
                     </div>
-                    <p className="text-cream/60 text-sm font-light leading-relaxed">
-                      {item.description}
-                    </p>
+                    <p className="text-cream/40 text-[10px] uppercase tracking-wider italic">({item.description})</p>
                   </div>
                 ))}
               </div>
             </div>
-          ))}
-        </div>
 
-        {/* Build Your Own Section */}
-        <div className="mt-32 p-12 border border-white/10 bg-white/5 text-center">
-          <h3 className="text-4xl mb-6">THE DIRECTOR'S CUT</h3>
-          <p className="text-cream/60 max-w-2xl mx-auto mb-12 font-light">
-            Customize any sub with our supporting roles. Choose your size, cheese, fillers, and sauces at the counter.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-left">
-            <div>
-              <h5 className="font-display text-retro-red tracking-widest mb-4 text-xs">CHEESES</h5>
-              <p className="text-xs font-mono opacity-50 leading-loose uppercase tracking-widest">
-                Provolone • American • Swiss • Mozzarella
-              </p>
+            {/* Sub Sections Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              {/* Cold Subs */}
+              <div className="space-y-6">
+                <h2 className="font-display text-3xl text-neon-yellow border-b border-white/10 pb-4">COLD SUBS</h2>
+                <ul className="space-y-4 font-mono text-[11px] tracking-tight">
+                  {coldSubs.map(item => (
+                    <li key={item.id} className="flex justify-between items-center group">
+                      <span className="group-hover:text-retro-red transition-colors">• {item.name}</span>
+                      <div className="flex gap-3 text-[10px]">
+                        <span className="text-neon-yellow">6" ${item.price6}</span>
+                        <span className="text-white">12" ${item.price12}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Hot Subs */}
+              <div className="space-y-6">
+                <h2 className="font-display text-3xl text-neon-yellow border-b border-white/10 pb-4">HOT SUBS</h2>
+                <ul className="space-y-4 font-mono text-[11px] tracking-tight mb-8">
+                  {hotSubs.map(item => (
+                    <li key={item.id} className="group-hover:text-retro-red transition-colors">• {item.name}</li>
+                  ))}
+                </ul>
+                <div className="bg-retro-red/10 border border-retro-red/30 p-4 text-center">
+                  <p className="font-display text-xl text-retro-red mb-1">ALL HOT SUBS</p>
+                  <p className="font-mono text-xs tracking-widest">6" $10.95 / 12" $14.95</p>
+                </div>
+              </div>
             </div>
-            <div>
-              <h5 className="font-display text-retro-red tracking-widest mb-4 text-xs">FILLERS</h5>
-              <p className="text-xs font-mono opacity-50 leading-loose uppercase tracking-widest">
-                Lettuce • Tomato • Dill Pickles • Onions • Banana Peppers • Jalapenos
-              </p>
+
+            {/* Customization Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-white/10">
+              <div>
+                <h4 className="font-display text-sm text-neon-yellow mb-4 tracking-widest uppercase">FILLERS</h4>
+                <ul className="font-mono text-[9px] text-cream/50 space-y-1 uppercase">
+                  {CUSTOMIZER.fillers.map(f => <li key={f}>• {f}</li>)}
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-display text-sm text-neon-yellow mb-4 tracking-widest uppercase">SAUCES</h4>
+                <ul className="font-mono text-[9px] text-cream/50 space-y-1 uppercase">
+                  {CUSTOMIZER.sauces.map(s => <li key={s}>• {s}</li>)}
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-display text-sm text-neon-yellow mb-4 tracking-widest uppercase">SPICES</h4>
+                <ul className="font-mono text-[9px] text-cream/50 space-y-1 uppercase">
+                  {CUSTOMIZER.spices.map(s => <li key={s}>• {s}</li>)}
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-display text-sm text-neon-yellow mb-4 tracking-widest uppercase">CHEESES</h4>
+                <ul className="font-mono text-[9px] text-cream/50 space-y-1 uppercase">
+                  {CUSTOMIZER.cheeses.map(c => <li key={c}>• {c}</li>)}
+                </ul>
+              </div>
             </div>
-            <div>
-              <h5 className="font-display text-retro-red tracking-widest mb-4 text-xs">SAUCES</h5>
-              <p className="text-xs font-mono opacity-50 leading-loose uppercase tracking-widest">
-                Mayo • Spicy Mustard • BBQ • Oil & Vinegar • Chipotle Mayo
-              </p>
+          </div>
+
+          {/* Right Column: Quick Bites */}
+          <div className="lg:col-span-4 space-y-12">
+            
+            {/* Salads */}
+            <div className="bg-white/5 border border-white/10 p-6">
+              <h2 className="font-display text-2xl text-neon-yellow mb-6 border-b border-white/10 pb-2">SALADS</h2>
+              <ul className="space-y-3 font-mono text-xs">
+                {salads.map(item => (
+                  <li key={item.id} className="flex justify-between group">
+                    <span className="group-hover:text-retro-red transition-colors">• {item.name}</span>
+                    <span className="text-neon-yellow">${item.price}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
+
+            {/* Wings */}
+            <div className="bg-white/5 border border-white/10 p-6">
+              <h2 className="font-display text-2xl text-neon-yellow mb-6 border-b border-white/10 pb-2">WINGS</h2>
+              <div className="space-y-4">
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {['PLAIN', 'BUFFALO', 'BBQ', 'GARLIC PARM', 'SWEET CHILI'].map(flavor => (
+                    <span key={flavor} className="text-[8px] font-mono bg-white/10 px-2 py-1 tracking-tighter">{flavor}</span>
+                  ))}
+                </div>
+                <ul className="space-y-3 font-mono text-xs">
+                  {wings.map(item => (
+                    <li key={item.id} className="flex justify-between group">
+                      <span className="group-hover:text-retro-red transition-colors">• {item.name}</span>
+                      <span className="text-neon-yellow">${item.price}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Fries & Extra */}
+            <div className="space-y-6">
+              <div className="bg-white/5 border border-white/10 p-6">
+                <h2 className="font-display text-2xl text-neon-yellow mb-6 border-b border-white/10 pb-2">FRIES</h2>
+                <ul className="space-y-3 font-mono text-xs">
+                  {fries.map(item => (
+                    <li key={item.id} className="flex justify-between group">
+                      <span className="group-hover:text-retro-red transition-colors">• {item.name}</span>
+                      <span className="text-neon-yellow">${item.price}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="bg-retro-red text-white p-6 text-center font-display text-2xl tracking-widest">
+                EXTRA MEAT ${CUSTOMIZER.extraMeat.toFixed(2)}
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
