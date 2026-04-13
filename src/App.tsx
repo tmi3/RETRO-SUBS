@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import { 
-  Film, 
+  Utensils, 
   MapPin, 
   Phone, 
   ChevronRight, 
@@ -27,7 +27,7 @@ export default function App() {
       <nav className="fixed top-0 w-full z-50 bg-movie-black/80 backdrop-blur-md border-b border-white/10 px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Film className="text-retro-red w-8 h-8" />
+            <Utensils className="text-retro-red w-8 h-8" />
             <span className="font-display text-2xl tracking-tighter">RETRO SUBS</span>
           </div>
           <div className="hidden md:flex items-center gap-8 font-display text-sm tracking-widest opacity-70">
@@ -265,7 +265,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
           <div>
             <div className="flex items-center gap-2 mb-8">
-              <Film className="text-retro-red w-8 h-8" />
+              <Utensils className="text-retro-red w-8 h-8" />
               <span className="font-display text-2xl tracking-tighter">RETRO SUBS</span>
             </div>
             <p className="text-cream/50 font-light text-sm leading-relaxed mb-8">
@@ -289,16 +289,24 @@ export default function App() {
             <h4 className="font-display text-xl mb-8 tracking-widest">SHOWTIMES</h4>
             <div className="space-y-4 font-mono text-xs tracking-widest text-cream/60">
               <div className="flex justify-between border-b border-white/5 pb-2">
-                <span>MON - FRI</span>
-                <span className="text-white">10:00 AM - 8:00 PM</span>
+                <span>SUNDAY</span>
+                <span className="text-white">11:00 AM - 6:00 PM</span>
+              </div>
+              <div className="flex justify-between border-b border-white/5 pb-2">
+                <span>MONDAY</span>
+                <span className="text-white">CLOSED</span>
+              </div>
+              <div className="flex justify-between border-b border-white/5 pb-2">
+                <span>TUE - THU</span>
+                <span className="text-white">11:00 AM - 9:00 PM</span>
+              </div>
+              <div className="flex justify-between border-b border-white/5 pb-2">
+                <span>FRIDAY</span>
+                <span className="text-white">12:00 PM - 8:00 PM</span>
               </div>
               <div className="flex justify-between border-b border-white/5 pb-2">
                 <span>SATURDAY</span>
                 <span className="text-white">11:00 AM - 9:00 PM</span>
-              </div>
-              <div className="flex justify-between border-b border-white/5 pb-2">
-                <span>SUNDAY</span>
-                <span className="text-white">11:00 AM - 6:00 PM</span>
               </div>
             </div>
           </div>
